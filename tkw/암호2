@@ -1,0 +1,212 @@
+nc crypto.task.ctf.codeblue.jp 13337
+
+16글자 이상
+
+0000000000000000lazy0
+
+
+뒷자리 기준, 뒤에서 5번쨰부터 lazy + 10진수 숫자 들어가야됨
+
+aaaaaaaaaaaaaaaa
+
+bbbbbbbbbbbbbbbb
+
+aaaabbbbaaaabbbblazy0
+
+0000000000000000lazy0
+
+
+aaaaaaaaaaaaaaaalazy1
+
+
+새로 시작 하기 전까지는 랜덤값이 고정.
+
+
+평문 , 키값 , 결과값 다 주어짐
+
+=> 남은건 복호화 코드 짜기.
+
+키값 :  입력한 앞 8 바이트, 암호화 8바이트 , 길이 를 인자로 암호화
+input = 입력값 
+
+userkey = 랜덤값
+
+입력값이 거치는 구문 : 짝수, 홀수에 따라 출력순서 변경 + 비트 연산 
+
+[144, 157, 178, 58, 83, 165, 8, 83, 220, 58, 125, 204, 21, 36, 186, 89]
+
+[9, 0, 9, 13, ] [11, 2, 3, 10,][ 5, 3, 10, 5,][ 0, 8, 5, 3, ][13, 12, 3, 10,][ 7, 13, 12, 12,][ 1, 5, 2, 4,][ 11, 10, 5, 9]
+
+공개키 e : 서로소 
+공개키 N : 두 소수의 곱
+
+암호문 = 평문 ^ 공개키e mod 공개키 N
+평문 = 암호문 * 비밀키 d mod 공개키 N
+
+
+
+
+
+평문 m = 암호문 b / 암호문 a ^ x mod 소수 p
+
+
+
+공개키 y = p보다 작은 g ^ p보다작은 임의의 자연수 개인키 x mod 소수 p
+
+C1 = p보다 작은 g ^ 임의수 r mod 소수 p
+
+C2 = 공개키 y ^ 임의수 k * 메시지 m mod 소수 p
+
+임의의 소수 q , q보다 작은 x와 g
+
+
+
+h = g^x mod q
+h 와 q.g를 공개키로, x를 개인키로 사용. 
+
+q 보다 작은 임의의 y
+
+K = 
+
+
+c1 = g^y mod q
+c2 = m * h^y mod q
+
+k = c1 ^ 비밀키 x mod q
+평문  m = c2 * k
+
+암호화 
+
+C2를 C1^x 로 나누면 m mod q 가 나옴. 
+
+
+
+큰 소수 q , 생성자 g
+
+비밀키 x , 공개키 h
+y = g ^ x mod q
+
+일회성 난수 k
+
+일히성 키 K
+
+K = 공개키 h ^ 난수 k mod q
+
+C1 = 생성자 g ^ 일회성 난수 k mod q
+C2 = 평문 m * (공개키 h ^ 난수 k mod q) mod q
+
+일회성 키 K = C1^ 비밀키 x mod q
+
+평문 m = C2 * K^-1 mod q
+
+ax=pow(M[0], self.x, self.p)
+
+plaintext=(M[1] * inverse(ax, self.p ) ) % self.p
+
+
+c2 / (c1^x) mod p
+
+def _decrypt(self, M):
+        if (not hasattr(self, 'x')):
+            raise TypeError('Private key not available in this object')
+        r = number.getRandomRange(2, self.p-1, self._randfunc)
+        a_blind = (M[0] * pow(self.g, r, self.p)) % self.p
+        ax=pow(a_blind, self.x, self.p)
+        plaintext_blind = (M[1] * inverse(ax, self.p ) ) % self.p
+        plaintext = (plaintext_blind * pow(self.y, r, self.p)) % self.p
+        return plaintext
+
+
+3^3 mod 5 = 4  5*x + 4 = 9
+
+3^t mod 5 = 3  5*y + 3 = 3t 
+
+
+3^t mod 5 = (3^3mod5 * 3^(t-3) mod 5 ) mod 5 = (4 * 3^(t-3) )mod5 = 3
+9 mod 5 = 4
+
+5*t - 4 = 9
+
+
+c1 = g^r mod p
+c2 = (m* (h^r mod p )mod p 
+p*x1 + c2 = m * (h^r mod p )
+
+
+r = (a * ran + B) % q = ((a*ran % q) + B %q) % q
+
+
+t = (a * r + b) % q = (a * ((a * ran + B) % q) + b) % q
+
+c1_ = g^t mod p 
+c2_ = (m* (h^t mod p)mod p 
+p*y1 + c2_ = m* (h^t mod p)
+
+p * y + c1_ = g^t
+p * x + c1 = g^r
+
+p*y1 + c2_ = m* (h^t mod p)
+p*x1 + c2 = m * (h^r mod p )
+
+y1/x1 + c2_/c2 = h^t mod p / h^r mod p
+
+
+y/x + c1_ / c1 = g^t-r
+
+
+일회성 키 K = C1^ 비밀키 x mod q
+
+r = (a * ran + B) % q
+
+c1 = g^r mod p
+c1_ = g^t mod p = (g^r mod p )*(g^(t-r) mod p ) mod p = (c1 *(g^(t-r) mod p ))mod p
+
+c2 = (m* (h^r mod p )mod p 
+c2_ = (m* (h^t mod p)mod p 
+
+ax = c1^x mod p 
+plain = (c2*inverse(ax,p))%p
+
+bx = c1^x mod p
+plain = (c2_*inverse(bx,p))%p
+
+c1*c2 = g^r mod p * (g^(a * r + b) % q) mod p
+
+
+c1 + c2 = g^r mod p + g^((a * r + b) % q) mod p
+
+g^q % p = 1
+
+g^x % p = h
+
+h = g^q*h - px*h
+
+p*i + h = g^x
+p*i - g^x = h
+
+p*i - g^x = g^q*h - px*h
+
+ax = c1^x mod p 
+bx = c1^x mod p
+
+
+(c2*inverse(ax,p))%p = (c2_*inverse(bx,p))%p
+c2*inverse(ax,p) = c2_*inverse(bx,p) + p*t
+
+
+11 % 13 = 24 % 13
+
+
+def exeu(a, b): 
+r = [a, b] s = [1, 0] t = [0, 1] while r[-1] != 0: 
+q = int(r[-2] / r[-1]) 
+r.append(r[-2] - q * r[-1]) 
+s.append(s[-2] - q * s[-1])
+t.append(t[-2] - q * t[-1]) 
+return (r[-2], s[-2], t[-2])
+
+
+
+L mod 9 = 14
+
+

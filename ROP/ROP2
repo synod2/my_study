@@ -1,0 +1,66 @@
+ROP2 풀이
+
+계산기 프로그램이다
+First_gate 함수 내 scanf 입력 받는 부분이 있다. 
+0x24, 즉 36위치에 입력을 받는다.
+그후 비교문에 진입하는데, 4을 입력할 시 diveded 함수를 실행하지만, 
+함수가 끝나고 난 다음 입력값이 5가 아니고 스택에서 0xc(12)위치에 있는 값이 0x3bfb7(245687)이면
+special_menu라는 함수로 진입한다. 
+
+special_menu 함수에서는 문자열을 출력한 다음 read 함수에서
+0x080487f6 함수의 인자로 전달되었던 값(ebp+8) 만큼 입력을 받아 0x12(18) 위치에 저장한다. 
+이때 저 인자로 전달될 값은 다른 함수 실행후에 그 결과값이 특정 변수에 저장되어 있다가,
+정상 호출 실패시에 곱해진 값으로 보인다.
+또한 정상 함수 호출 성공시에는 그 결과값을 0x12 위치에 저장한다. 
+따라서, 다른 함수를 몇회 실행하고 위 루틴으로 들어가야 원하는 값 만큼 입력이 가능해진다. 
+
+덧셈연산과 뺄셈 연산을 각각 8회정도 반복하고 나눗셈으로 들어가면 
+충분한 바이트수 확보가 가능하고, 결과값도 계속 1로 고정되게끔 만들 수 있다. 
+
+
+정상 계산 1회 수행 후 -> 정상 계산 함수 호출 실패 -> 공격루틴
+
+식으로 진행되어야 할것같다.
+
+
+
+
+22만큼 입력받고 , 
+puts함수로 puts 의 메모리 주소를 leak
+puts 와 system 간 오프셋을 계산 (puts-system)
+leak한 주소와 계산한 오프셋 더하여 대입 
+system 호출하고, binsh 문자열 주소 찾아서 인자로 넣기. 
+
+puts@plt 0x08048430
+puts@got 0x0804a014
+
+0x08048925 main 
+
+libc : 0xf7f79d4c ("/bin/sh")
+$3 = {<text variable, no debug info>} 0xf7e7c7e0 <puts>
+$4 = {<text variable, no debug info>} 0xf7e57310 <system>
+0x08048470 / scanf@plt
+popret = 0x80483f9
+0x080487a0 / special_menu
+스택 그려보면
+
+buf[22]
+dummy 4b 
+puts@plt
+special_menu / 0x080487a0
+puts@got 
+
+주소 leak 까지 성공. 
+맨처음의 special_menu에서 다시 입력받는 부분으로 돌아와서, 
+이번엔 오프셋 계산을 마친system 함수를 출력해보자.
+
+buf[22]
+dummy 4b
+system@plt // 
+dummy
+binsh_offset
+
+풀이 성공.
+
+
+

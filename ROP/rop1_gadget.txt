@@ -1,0 +1,82 @@
+Gadgets information
+============================================================
+0x080485c1 : adc al, 0x41 ; ret
+0x0804842e : adc al, 0x50 ; call edx
+0x080483a7 : adc cl, cl ; ret
+0x08048408 : add al, 8 ; add ecx, ecx ; ret
+0x080483a1 : add al, 8 ; call eax
+0x080483db : add al, 8 ; call edx
+0x080484cf : add bl, dh ; ret
+0x08048569 : add byte ptr [eax], al ; add byte ptr [eax], al ; add byte ptr [eax], al ; retf
+0x08048463 : add byte ptr [eax], al ; add byte ptr [eax], al ; leave ; ret
+0x0804856b : add byte ptr [eax], al ; add byte ptr [eax], al ; retf
+0x08048464 : add byte ptr [eax], al ; add cl, cl ; ret
+0x080482e4 : add byte ptr [eax], al ; add esp, 8 ; pop ebx ; ret
+0x08048465 : add byte ptr [eax], al ; leave ; ret
+0x0804856e : add byte ptr [eax], al ; retf
+0x08048466 : add cl, cl ; ret
+0x08048405 : add eax, 0x804a020 ; add ecx, ecx ; ret
+0x0804840a : add ecx, ecx ; ret
+0x080483a5 : add esp, 0x10 ; leave ; ret
+0x0804845f : add esp, 0xc ; mov eax, 0 ; leave ; ret
+0x080484c5 : add esp, 0xc ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x080482e6 : add esp, 8 ; pop ebx ; ret
+0x08048406 : and byte ptr [eax - 0x36fef7fc], ah ; ret
+0x080485be : and byte ptr [edi + 0xe], al ; adc al, 0x41 ; ret
+0x080484df : and ebx, dword ptr [ebx] ; add byte ptr [eax], al ; add esp, 8 ; pop ebx ; ret
+0x080483a3 : call eax
+0x080483dd : call edx
+0x08048527 : call esp
+0x080485bc : dec ebp ; push cs ; and byte ptr [edi + 0xe], al ; adc al, 0x41 ; ret
+0x0804842d : in al, dx ; adc al, 0x50 ; call edx
+0x0804842b : in eax, -0x7d ; in al, dx ; adc al, 0x50 ; call edx
+0x080485c2 : inc ecx ; ret
+0x080485bf : inc edi ; push cs ; adc al, 0x41 ; ret
+0x080484ce : jbe 0x80484d3 ; ret
+0x08048427 : je 0x8048424 ; push ebp ; mov ebp, esp ; sub esp, 0x14 ; push eax ; call edx
+0x080484c4 : jecxz 0x8048451 ; les ecx, ptr [ebx + ebx*2] ; pop esi ; pop edi ; pop ebp ; ret
+0x080484c3 : jne 0x80484b1 ; add esp, 0xc ; pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x080484cd : lea esi, dword ptr [esi] ; ret
+0x080483a8 : leave ; ret
+0x08048460 : les ecx, ptr [eax + edi*4] ; add byte ptr [eax], al ; add byte ptr [eax], al ; leave ; ret
+0x080482e7 : les ecx, ptr [eax] ; pop ebx ; ret
+0x080484c6 : les ecx, ptr [ebx + ebx*2] ; pop esi ; pop edi ; pop ebp ; ret
+0x080483a6 : les edx, ptr [eax] ; leave ; ret
+0x08048407 : mov al, byte ptr [0xc9010804] ; ret
+0x08048404 : mov byte ptr [0x804a020], 1 ; leave ; ret
+0x08048462 : mov eax, 0 ; leave ; ret
+0x0804842a : mov ebp, esp ; sub esp, 0x14 ; push eax ; call edx
+0x08048370 : mov ebx, dword ptr [esp] ; ret
+0x0804836f : nop ; mov ebx, dword ptr [esp] ; ret
+0x0804836d : nop ; nop ; mov ebx, dword ptr [esp] ; ret
+0x0804836b : nop ; nop ; nop ; mov ebx, dword ptr [esp] ; ret
+0x080484c7 : or al, 0x5b ; pop esi ; pop edi ; pop ebp ; ret
+0x08048461 : or al, 0xb8 ; add byte ptr [eax], al ; add byte ptr [eax], al ; leave ; ret
+0x080483a2 : or bh, bh ; rol byte ptr [ebx - 0xc36ef3c], 1 ; ret
+0x080483dc : or bh, bh ; rol byte ptr [ebx - 0xc36ef3c], cl ; ret
+0x08048409 : or byte ptr [ecx], al ; leave ; ret
+0x080484cb : pop ebp ; ret
+0x080484c8 : pop ebx ; pop esi ; pop edi ; pop ebp ; ret
+0x080482e9 : pop ebx ; ret
+0x080484ca : pop edi ; pop ebp ; ret
+0x080484c9 : pop esi ; pop edi ; pop ebp ; ret
+0x0804839e : push 0x804a020 ; call eax
+0x080483d8 : push 0x804a020 ; call edx
+0x080485c0 : push cs ; adc al, 0x41 ; ret
+0x080485bd : push cs ; and byte ptr [edi + 0xe], al ; adc al, 0x41 ; ret
+0x080485ba : push cs ; xor byte ptr [ebp + 0xe], cl ; and byte ptr [edi + 0xe], al ; adc al, 0x41 ; ret
+0x0804842f : push eax ; call edx
+0x080483d7 : push eax ; push 0x804a020 ; call edx
+0x08048429 : push ebp ; mov ebp, esp ; sub esp, 0x14 ; push eax ; call edx
+0x080482d2 : ret
+0x080483be : ret 0xeac1
+0x08048570 : retf
+0x080483a4 : rol byte ptr [ebx - 0xc36ef3c], 1 ; ret
+0x080483de : rol byte ptr [ebx - 0xc36ef3c], cl ; ret
+0x08048371 : sbb al, 0x24 ; ret
+0x080483d4 : sub esp, 0x10 ; push eax ; push 0x804a020 ; call edx
+0x0804839b : sub esp, 0x14 ; push 0x804a020 ; call eax
+0x0804842c : sub esp, 0x14 ; push eax ; call edx
+0x080485bb : xor byte ptr [ebp + 0xe], cl ; and byte ptr [edi + 0xe], al ; adc al, 0x41 ; ret
+
+Unique gadgets found: 78
